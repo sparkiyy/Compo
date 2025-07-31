@@ -1,0 +1,5 @@
+std = "roblox"
+
+[rules]
+unused_variable = "allow"
+global_usage = "warn"

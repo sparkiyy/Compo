@@ -1,0 +1,27 @@
+{
+    "name": "compo testing",
+    "tree": {
+      "$className": "DataModel",
+      "ReplicatedStorage": {
+        "$className": "ReplicatedStorage",
+        "compo": {
+            "$path": "Include/Linking.lua",
+            "Packages": {
+                "$path": "Packages",
+                "compo": {
+                    "$path": "lib"
+                }        
+              }
+        
+      }
+       
+      },
+      "ServerScriptService": {
+          "$className": "ServerScriptService",
+          "Server": {
+            "$path": "testing"
+          }
+      }
+    }
+    
+  }

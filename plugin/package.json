@@ -1,0 +1,41 @@
+{
+  "name": "compo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rbxtsc",
+    "watch": "concurrently -n \"rbxtsc,rojo\" -c \"blue,green\" \"rbxtsc -w\" \"rojo build --watch -o C:\\Users\\Spark.DESKTOP-MM9K7PO\\AppData\\Local\\Roblox\\Plugins\\Compo.rbxm\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@rbxts/compiler-types": "^3.0.0-types.0",
+    "@rbxts/types": "^1.0.865",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-roblox-ts": "^0.0.36",
+    "prettier": "^3.6.2",
+    "roblox-ts": "^3.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@rbxts/altmake": "^0.1.5",
+    "@rbxts/attributes": "^1.0.0",
+    "@rbxts/charm": "^0.10.0",
+    "@rbxts/comet": "^2.0.0",
+    "@rbxts/jsnatives": "^1.1.5",
+    "@rbxts/pretty-react-hooks": "^0.6.4",
+    "@rbxts/react": "^17.2.3",
+    "@rbxts/react-charm": "^0.3.0",
+    "@rbxts/react-roblox": "^17.2.3",
+    "@rbxts/services": "^1.5.5",
+    "@rbxts/trash": "^1.0.8",
+    "concurrently": "^9.2.0"
+  }
+}

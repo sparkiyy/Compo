@@ -1,0 +1,12 @@
+{
+  "name": "compo",
+  "tree": {
+    "$path": "include/linking.lua",
+    "Packages": {
+      "$path": "Packages",
+      "compo": {
+          "$path": "lib"
+      }        
+    }
+  }
+}

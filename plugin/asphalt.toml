@@ -1,0 +1,13 @@
+[creator]
+type = "user"
+id = 1562309503
+
+[codegen]
+typescript = true
+style = "nested"
+strip_extensions = true
+
+[inputs.assets]
+path = "assets/**/*"
+output_path = "src/assets"
+
