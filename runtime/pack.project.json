@@ -1,7 +1,7 @@
 {
   "name": "compo",
   "tree": {
-    "$path": "include/linking.lua",
+    "$path": "Include/Linking.lua",
     "Packages": {
       "$path": "Packages",
       "compo": {
