@@ -1,33 +1,38 @@
 <div>
-    <p align="center"><img src="assets/icons/toolbarIcon.png" height=100 width=100></p>
-    <h1 align="center">Compo</h1>
-    <p align="center">
-        <img alt="Download plugin badge" src="https://img.shields.io/badge/Download-plugin-yellow"/> 
-        <a href="UNLICENSE.md"><img alt="Unlicensed badge" src="https://img.shields.io/badge/License-The%20Unlicense-pink"/></a>
-    </p>
-    <p align="center">Compo is a lightweight, Monobehaviour-like <b>component framework</b> for roblox 📦.</p>
+  <p align="center">
+    <img src="assets/asphalt/icons/toolbarIcon.png" height="100" width="100">
+  </p>
+  <h1 align="center">Compo</h1>
+  <p align="center">
+    <img alt="Download plugin badge" src="https://img.shields.io/badge/Download-plugin-yellow"/> 
+    <a href="UNLICENSE.md">
+      <img alt="Unlicensed badge" src="https://img.shields.io/badge/License-The%20Unlicense-pink"/>
+    </a>
+  </p>
+  <p align="center">
+    Compo is a lightweight, MonoBehaviour-like <b>component framework</b> for Roblox 📦.
+  </p>
 </div>
 
 ## Installation 🦭
 
-You can install compo via wally or downloading the .rbxm
+You can install Compo via Wally or by downloading the `.rbxm` file:
 
 ```toml
 [dependencies]
 compo = "sparkiyy/compo@VERSION"
-```
+````
 
 ## Guide 🐆
-🚧 This guide assumes you have already installed compo inspector.
 
-Components are created with the .component suffix, this indicated the plugin to register it to show it up in the inspector.
+🚧 This guide assumes you have already installed the Compo Inspector.
 
+Components are created using the `.component` suffix. This tells the plugin to register the component and show it in the inspector.
 
+Components can **currently** be descendants of one of the following two realms:
 
-Components **currently** can be descendants of one of these 2 realms:
-- Starter Player Scripts
-- Server Script Service
-
+* StarterPlayerScripts
+* ServerScriptService
 
 ```lua
 -- myAwesomeComponent.component.luau
@@ -35,18 +40,19 @@ local compo = require(game.ReplicatedStorage.compo)
 
 return compo.createComponent(function(component)
     function component.start()
-        print("Hello World c:, from: " .. component.instance.Name)   
+        print("Hello world c:, from: " .. component.instance.Name)   
     end
-    
+
     function component.onDestroy()
-        print("Goodbye World :c, from: " .. component.instance.Name) 
+        print("Goodbye world :c, from: " .. component.instance.Name) 
     end
 end)
 ```
 
-Compo Inspector will automatically attach an unique id to the module, Compo uses this ID to track the component in runtime so don't remove / modify it.
+The Compo Inspector will automatically attach a unique ID to the module. Compo uses this ID to track the component at runtime, so **don’t remove or modify it**.
 
-To initialize Compo, you need to start it in each realm.
+To initialize Compo, you need to start it in each realm:
+
 ```lua
 -- client.lua
 local compo = require(game.ReplicatedStorage.compo)
@@ -59,8 +65,15 @@ end)
 
 And that's all!
 
-The real power of Compo comes with it's inspector, wich is an extension of Roblox properties panel:
+> \[!NOTE]
+> Compo was designed to be used together with the **Compo Inspector** plugin.
+> You can technically use it without the plugin, but you’ll have to assign every value manually — **not recommended**.
 
+## Inspector 🐙
 
-> [!NOTE]
-> Compo was thinked to be used it in companion with the **Compo Inspector** plugin, you can technically use without it, but you will need to asign every value manually **(do not)**.
+As mentioned before, the real power of Compo comes with its inspector, which is an extension of the Roblox Properties panel:
+
+<p align="center">
+  <img alt="Compo Inspector interface, showing an instance with 0 components" src="assets/compoInspectorMainWindow.png" height="400"/> 
+  <img alt="Compo Inspector interface, showing an instance with 0 components" src="assets/compoInspectorMainWindow2.png" height="400"/> 
+</p>
