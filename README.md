@@ -12,7 +12,7 @@
     </a>
   </p>
   <p align="center">
-    Compo is a lightweight, MonoBehaviour-like <b>component framework</b> for Roblox 📦.
+    Compo is a lightweight, Unity-like <b>component framework</b> for Roblox 📦.
   </p>
 </div>
 
@@ -31,7 +31,7 @@ compo = "sparkiyy/compo@VERSION"
 
 Components are created using the `.component` suffix. This tells the plugin to register the component and show it in the inspector.
 
-Components can **currently** be descendants of one of the following two realms:
+Currently, components can **only** be descendants of the following two realms:
 
 * StarterPlayerScripts
 * ServerScriptService
