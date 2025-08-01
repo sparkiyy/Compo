@@ -1,6 +1,8 @@
+
 <div>
   <p align="center">
     <img src="assets/asphalt/icons/toolbarIcon.png" height="100" width="100">
+    <p align="center">[PREVIEW]</p>
   </p>
   <h1 align="center">Compo</h1>
   <p align="center">
@@ -62,12 +64,26 @@ compo.start():andThen(function()
     print("Compo started!")
 end)
 ```
-
-And that's all!
-
 > \[!NOTE]
 > Compo was designed to be used together with the **Compo Inspector** plugin.
 > You can technically use it without the plugin, but you’ll have to assign every value manually — **not recommended**.
+
+## Life Cycle
+
+<p align="center"><img alt="Download plugin badge" src="assets/lifeCycleDiagram.png" height=800/> </p>
+
+| Stage         | Description                                                                                           |
+|---------------|-----------------------------------------------------------------------------------------------------|
+| `awake()`     | Called immediately after the scheduler runs (can yield).                                           |
+| `onEnable()`  | Called the first time after each component finishes the awake phase and whenever the component is re-enabled (can yield, only the first time). |
+| `start()`     | Called on the first frame after all registered components have finished awake and onEnable phases.  |
+| `update()`    | Called every frame during `RunService.Heartbeat`.                                                   |
+| `fixedUpdate()`| Called at a fixed time interval (0.02s by default), independent of the frame rate.                  |
+| `onDisable()` | Called when a component is deactivated.                                                             |
+| `onDestroy()` | Called when a component is permanently unregistered (destroyed).                                    |
+
+
+
 
 ## Inspector 🐙
 
