@@ -1,5 +1,5 @@
 {
-	"name": "roblox-ts-plugin",
+	"name": "compo",
 	"globIgnorePaths": [
 		"**/package.json",
 		"**/tsconfig.json"
