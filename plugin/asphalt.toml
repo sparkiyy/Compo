@@ -8,6 +8,6 @@ style = "nested"
 strip_extensions = true
 
 [inputs.assets]
-path = "assets/**/*"
+path = "../assets/**/*"
 output_path = "src/assets"
 
