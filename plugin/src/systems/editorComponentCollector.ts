@@ -1,9 +1,11 @@
 import Attributes from "@rbxts/attributes";
 import { OnStart, System, Track } from "@rbxts/comet";
 import { String } from "@rbxts/jsnatives";
-import { HttpService, ReplicatedStorage, ServerScriptService, StarterPlayer, Workspace } from "@rbxts/services";
+import { ServerScriptService, StarterPlayer, Workspace } from "@rbxts/services";
 import { Trash } from "@rbxts/trash";
 import { ComponentRealm, EditorComponentsAtom } from "atoms/editorComponents";
+import { COMPONENT_ACTIVE, COMPONENT_ID } from "constants";
+import { newUUID } from "utility/uuidGenerator";
 
 @System()
 export class EditorComponentCollector implements OnStart {
@@ -57,10 +59,11 @@ export class EditorComponentCollector implements OnStart {
 	}
 
 	private registerComponent(component: Instance, ancestor: Instance) {
-		const attributes = Attributes<{ _component_id: string | undefined }>(component);
+		const attributes = Attributes<{ [COMPONENT_ID]: string | undefined }>(component);
 		if (!attributes._component_id) {
-			attributes._component_id = HttpService.GenerateGUID(false);
+			attributes._component_id = newUUID();
 		}
+
 		const components = {
 			...EditorComponentsAtom(),
 			[attributes._component_id]: {

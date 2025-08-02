@@ -4,14 +4,15 @@ import useTheme from "hooks/visuals/useTheme";
 
 interface Props {
 	checked: boolean;
+	onClick?: () => void;
 }
 
-export default function CheckBox(props: Props) {
+export default function CheckBox({checked, onClick}: Props) {
 	const theme = useTheme();
 	return (
-		<imagebutton Size={UDim2.fromOffset(14, 14)} BackgroundColor3={theme.Dark.Default} BorderSizePixel={0}>
+		<imagebutton Size={UDim2.fromOffset(14, 14)} BackgroundColor3={theme.Dark.Default} BorderSizePixel={0} Event={{MouseButton1Click: onClick}}>
 			<imagelabel
-				Image={checkmark}
+				Image={checked ? checkmark : undefined}
 				ImageColor3={theme.MainText.Default}
 				Size={UDim2.fromOffset(12, 12)}
 				Position={UDim2.fromScale(0.5, 0.5)}

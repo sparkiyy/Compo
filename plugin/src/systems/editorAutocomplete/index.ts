@@ -5,7 +5,7 @@ const ScriptEditorService = game.GetService("ScriptEditorService");
 export class ComponentAutocompleteSystem implements OnStart, OnEnd {
 	private readonly processName = "CompoAutocomplete";
 	private readonly label = ":Component";
-	private readonly code = `local Compo = require(game.ReplicatedStorage.Compo)
+	private readonly code = `local Compo = require(game.ReplicatedStorage.compo)
 
 return Compo.createComponent(function(component)
 	-- onEnable is called when the tag is attached to the instance
