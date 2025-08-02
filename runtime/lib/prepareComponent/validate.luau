@@ -1,7 +1,11 @@
---!strict
+local t = require(script.Parent.Parent.Parent.t)
 local types = require(script.Parent.Parent.types)
+
+local IComponent = t.interface({
+	constructor = t.callback,
+	fields = t.optional(t.table)
+})
+
 return function(component: types.componentBuilder)
-	if not component.constructor and typeof(component.constructor) ~= "function" then return false end
-		
-	return true
+	return IComponent(component)
 end

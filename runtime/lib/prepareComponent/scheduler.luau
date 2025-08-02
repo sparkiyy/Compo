@@ -60,7 +60,7 @@ function scheduler.registerComponent(component: types.component)
 	end
 end
 
-function scheduler.initializeLifeCycle()
+function scheduler.initializeLifecycle()
 	scheduler.initialized = true
 
 	return promise.new(function(resolve)
@@ -147,7 +147,7 @@ function scheduler.unregisterComponent(component: types.component)
 end
 
 return {
-	initializeLifeCycle = scheduler.initializeLifeCycle,
+	initializeLifecycle = scheduler.initializeLifecycle,
 	registerComponent = scheduler.registerComponent,
 	unregisterComponent = scheduler.unregisterComponent,
 	setComponentActive = scheduler.setComponentActive,

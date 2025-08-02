@@ -1,4 +1,4 @@
-local compo = require(game.ReplicatedStorage.compo)
-compo.start():andThen(function()
+local compo = require(game:GetService("ReplicatedStorage").compo)
+compo.launch():andThen(function()
     print("resolved")
 end)

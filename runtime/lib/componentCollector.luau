@@ -1,13 +1,14 @@
 local constants = require(script.Parent.constants)
 
--- Gets each component in the current realm
+-- Gets every component in the current realm
 return function(): { ModuleScript }
-	if constants.mainDirectory == game:GetService("StarterPlayer") and not game:IsLoaded() then -- In server side, game:IsLoaded() is always false
+	-- In server side, game:IsLoaded() is always false
+	if constants.mainDirectory == game:GetService("StarterPlayer") and not game:IsLoaded() then 
 		game.Loaded:Wait()
 	end
 
 	local components: { ModuleScript } = {}
-	-- Getting descendants to search components
+	-- Iterating throught every descendant of the realm
 	for _, component in ipairs(constants.mainDirectory:GetDescendants()) do
 		if not (component:IsA("ModuleScript")) then -- If not a module, skipping
 			continue

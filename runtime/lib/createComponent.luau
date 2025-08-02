@@ -1,4 +1,3 @@
---!strict
 local types = require(script.Parent.types)
 
 local function createComponent(

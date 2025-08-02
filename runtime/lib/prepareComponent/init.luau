@@ -5,12 +5,12 @@ local types = require(script.Parent.types)
 local scheduler = require(script.scheduler)
 local janitor = require(script.Parent.Parent.Parent.Packages.janitor)
 
-local function manage(componentBuilder: types.componentBuilder, id: string, instance: Instance)
+local function manage(componentBuilder: types.componentBuilder, id: string, tag: string, instance: Instance)
 	local attribute = constants.COMPONENT_ACTIVE .. id
 	local active = instance:GetAttribute(attribute)
 	local trash = janitor.new()
 	trash:LinkToInstance(instance)
-	
+
 	local function register()
 		-- Building component an registering it
 		local component = componentBuilder.constructor(instance)
@@ -27,6 +27,11 @@ local function manage(componentBuilder: types.componentBuilder, id: string, inst
 				return
 			end
 			trash:Destroy()
+		end))
+
+		-- when tag removed, destroying component
+		trash:Add(CollectionService:GetInstanceRemovedSignal(tag):Connect(function(removedInstance: Instance)
+			if (instance == removedInstance) then trash:Destroy() end 
 		end))
 		-- listening for active attribute changes
 		trash:Add(instance:GetAttributeChangedSignal(attribute):Connect(function()
@@ -49,33 +54,37 @@ local function manage(componentBuilder: types.componentBuilder, id: string, inst
 end
 
 return function(component: ModuleScript)
+	-- Component's id
 	local id = component:GetAttribute(constants.COMPONENT_ID) :: string
 
 	if not id then
-		warn(
-			`A component was defined with '.component' ({component.Name}), but there's no ID associated with it. Did you forget to add a '{constants.COMPONENT_ID}' attribute?.`
-		)
+		-- Maybe you deleted component's id attribute
+		warn(`[🟠WARNING] A component was defined with '.component' ({component.Name}), but there's no ID associated with it. Did you forget to add a '{constants.COMPONENT_ID}' attribute?.`)
 		return
 	end
 
-	local componentBuilder = require(component) :: types.componentBuilder
+	-- Requiring component. Returns both constructor and fields
+	local s, componentBuilder = pcall(require, component) 
+	componentBuilder = componentBuilder :: types.componentBuilder
+
+	if not s then
+		warn(`[🟠WARNING] An error ocurred loading'{component.Name}' component: {componentBuilder}`)
+		return 
+	end
 	if not validate(componentBuilder) then
-		warn(`{component.Name} is not a valid component.`)
+		warn(`[🟠WARNING] '{component.Name}' has a no valid component format!.`)
 		return
 	end
 
-	local tag = constants.COMPONENT_TAG .. id
+	local targetTag = constants.COMPONENT_TAG .. id
 
 	-- Getting all marked instances to run the component
-	for _, instance in ipairs(CollectionService:GetTagged(tag)) do
-		manage(componentBuilder, id, instance)
+	for _, instance in ipairs(CollectionService:GetTagged(targetTag)) do
+		manage(componentBuilder, id, targetTag, instance)
 	end
 
 	-- Listening to new marked instances
-	CollectionService:GetInstanceAddedSignal(tag):Connect(function(instance)
-		manage(componentBuilder, id, instance)
+	CollectionService:GetInstanceAddedSignal(targetTag):Connect(function(instance)
+		manage(componentBuilder, id, targetTag, instance)
 	end)
-
-	-- Launching scheduler
-	scheduler.initializeLifeCycle()
 end

@@ -26,6 +26,6 @@ return function()
 			scheduler.initializeLifecycle() -- Runs compo lifecycle
 		end)
 		:catch(function(e)
-			warn("[🔴FATAL] An unknown error ocurred launching compo: ", e)
+			error("[🔴FATAL] An unknown error ocurred launching compo: ", e)
 		end)
 end
