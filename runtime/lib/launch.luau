@@ -9,9 +9,8 @@ local _launched = false
 return function()
 	return promise
 		.new(function(resolve, reject)
-			
 			if _launched then
-				reject("launch should be only called once!")
+				reject("launch() should be only called once!")
 			end
 			_launched = true
 
@@ -24,7 +23,7 @@ return function()
 			end
 		end)
 		:andThen(function()
-			scheduler.initializeLifeCycle()
+			scheduler.initializeLifecycle() -- Runs compo lifecycle
 		end)
 		:catch(function(e)
 			warn("[🔴FATAL] An unknown error ocurred launching compo: ", e)
