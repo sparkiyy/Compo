@@ -59,8 +59,8 @@ To initialize Compo, you need to start it in each realm:
 -- client.lua
 local compo = require(game.ReplicatedStorage.compo)
 
--- start() returns a promise that resolves when the main loop starts
-compo.start():andThen(function()
+-- launch() returns a promise that resolves when the main loop starts
+compo.launch():andThen(function()
     print("Compo started!")
 end)
 ```
