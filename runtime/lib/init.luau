@@ -1,4 +1,4 @@
 return {
-	start = require(script.start),
+	launch = require(script.launch),
 	createComponent = require(script.createComponent),
 }

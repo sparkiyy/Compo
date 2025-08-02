@@ -3,7 +3,6 @@ local constants = require(script.Parent.constants)
 -- Gets each component in the current realm
 return function(): { ModuleScript }
 	if constants.mainDirectory == game:GetService("StarterPlayer") and not game:IsLoaded() then -- In server side, game:IsLoaded() is always false
-		print(game:IsLoaded())
 		game.Loaded:Wait()
 	end
 
