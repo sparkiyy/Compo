@@ -5,10 +5,10 @@ local function createComponent(
 	fields: {}
 ): types.componentBuilder
 	return {
-		constructor = function(instance: Instance): types.component
+		constructor = function(instance: Instance, refinatedFields : any): types.component
 			local component = {
 				instance = instance,
-				fields = fields,
+				fields = refinatedFields,
 			} :: types.component
 
 			transformer(component)

@@ -6,5 +6,6 @@ return {
 	mainDirectory = if RunService:IsServer() then ServerScriptService else StarterPlayer,
 	COMPONENT_ID = "_component_id",
 	COMPONENT_TAG = "_compo_component:",
-	COMPONENT_ACTIVE = "_component_active"
+	COMPONENT_ACTIVE = "_component_active",
+	COMPONENT_FIELD = "_component_field"
 }

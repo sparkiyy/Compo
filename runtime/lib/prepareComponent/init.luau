@@ -4,6 +4,16 @@ local validate = require(script.validate)
 local types = require(script.Parent.types)
 local scheduler = require(script.scheduler)
 local janitor = require(script.Parent.Parent.Parent.Packages.janitor)
+local t = require(script.Parent.Parent.Parent.Packages.t)
+
+local function getRefinatedFields(instance: Instance, id: string)
+	-- Proxy fields
+	return setmetatable({}, {
+		__index = function(_, index)
+			return instance:GetAttribute(constants.COMPONENT_FIELD .. id .. index)
+		end
+	})
+end
 
 local function manage(componentBuilder: types.componentBuilder, id: string, tag: string, instance: Instance)
 	local attribute = constants.COMPONENT_ACTIVE .. id
@@ -13,7 +23,7 @@ local function manage(componentBuilder: types.componentBuilder, id: string, tag:
 
 	local function register()
 		-- Building component an registering it
-		local component = componentBuilder.constructor(instance)
+		local component = componentBuilder.constructor(instance, getRefinatedFields(instance, id) :: any)
 		scheduler.registerComponent(component)
 
 		-- when trash is destroyed, unregistering the component
@@ -31,7 +41,9 @@ local function manage(componentBuilder: types.componentBuilder, id: string, tag:
 
 		-- when tag removed, destroying component
 		trash:Add(CollectionService:GetInstanceRemovedSignal(tag):Connect(function(removedInstance: Instance)
-			if (instance == removedInstance) then trash:Destroy() end 
+			if instance == removedInstance then
+				trash:Destroy()
+			end
 		end))
 		-- listening for active attribute changes
 		trash:Add(instance:GetAttributeChangedSignal(attribute):Connect(function()
@@ -57,20 +69,23 @@ return function(component: ModuleScript)
 	-- Component's id
 	local id = component:GetAttribute(constants.COMPONENT_ID) :: string
 
-	if not id then
+	if not t.string(id) then
 		-- Maybe you deleted component's id attribute
-		warn(`[🟠WARNING] A component was defined with '.component' ({component.Name}), but there's no ID associated with it. Did you forget to add a '{constants.COMPONENT_ID}' attribute?.`)
+		warn(
+			`[🟠WARNING] A component was defined with '.component' ({component.Name}), but there's no ID associated with it (or is not a string). Did you forget to add a '{constants.COMPONENT_ID}' attribute?.`
+		)
 		return
 	end
 
 	-- Requiring component. Returns both constructor and fields
-	local s, componentBuilder = pcall(require, component) 
+	local s, componentBuilder = pcall(require, component)
 	componentBuilder = componentBuilder :: types.componentBuilder
 
 	if not s then
 		warn(`[🟠WARNING] An error ocurred loading'{component.Name}' component: {componentBuilder}`)
-		return 
+		return
 	end
+
 	if not validate(componentBuilder) then
 		warn(`[🟠WARNING] '{component.Name}' has a no valid component format!.`)
 		return

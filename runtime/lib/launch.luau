@@ -21,9 +21,9 @@ return function()
 			for _, component in ipairs(components) do
 				prepareComponent(component)
 			end
-		end)
-		:andThen(function()
-			scheduler.initializeLifecycle() -- Runs compo lifecycle
+			
+			-- Runs compo lifecycle
+			scheduler.initializeLifecycle() 
 		end)
 		:catch(function(e)
 			error("[🔴FATAL] An unknown error ocurred launching compo: ", e)

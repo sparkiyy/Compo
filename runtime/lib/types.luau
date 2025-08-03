@@ -14,7 +14,7 @@ export type component = {
 }
 
 export type componentBuilder = {
-	constructor: (instance: Instance) -> component,
+	constructor: (instance: Instance, refinatedFields : {}) -> component,
 	fields: {},
 }
 
