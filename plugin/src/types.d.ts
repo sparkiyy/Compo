@@ -1,3 +1,0 @@
-interface StudioService {
-    ActiveScript: LuaSourceContainer
-}

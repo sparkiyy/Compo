@@ -1,14 +1,17 @@
 import Attributes from "@rbxts/attributes";
-import { OnStart, System, Track } from "@rbxts/comet";
+import { Dependency, OnStart, System, Track } from "@rbxts/comet";
 import { String } from "@rbxts/jsnatives";
 import { ServerScriptService, StarterPlayer, Workspace } from "@rbxts/services";
 import { Trash } from "@rbxts/trash";
 import { ComponentRealm, EditorComponentsAtom } from "atoms/editorComponents";
 import { COMPONENT_ACTIVE, COMPONENT_ID } from "constants";
 import { newUUID } from "utility/uuidGenerator";
+import { EditorComponentFieldSystem } from "./editorComponentField";
 
 @System()
 export class EditorComponentCollector implements OnStart {
+	private editorComponentFieldSystem = Dependency(EditorComponentFieldSystem);
+
 	private trackingPaths = [StarterPlayer, ServerScriptService];
 	onStart() {
 		for (const [_, path] of ipairs(this.trackingPaths)) {
@@ -58,7 +61,7 @@ export class EditorComponentCollector implements OnStart {
 		);
 	}
 
-	private registerComponent(component: Instance, ancestor: Instance) {
+	private registerComponent(component: ModuleScript, ancestor: Instance) {
 		const attributes = Attributes<{ [COMPONENT_ID]: string | undefined }>(component);
 		if (!attributes._component_id) {
 			attributes._component_id = newUUID();
@@ -71,6 +74,7 @@ export class EditorComponentCollector implements OnStart {
 				name: this.getName(component),
 				realm: ancestor === StarterPlayer ? ComponentRealm.Client : ComponentRealm.Server,
 				id: attributes._component_id,
+				isDirty: true,
 			},
 		};
 
@@ -100,6 +104,7 @@ export class EditorComponentCollector implements OnStart {
 		);
 
 		EditorComponentsAtom(components);
+		this.editorComponentFieldSystem.updateFields();
 	}
 
 	private unregisterComponent(component: Instance) {

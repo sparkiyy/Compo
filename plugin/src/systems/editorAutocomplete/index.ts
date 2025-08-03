@@ -4,9 +4,10 @@ const ScriptEditorService = game.GetService("ScriptEditorService");
 @System()
 export class ComponentAutocompleteSystem implements OnStart, OnEnd {
 	private readonly processName = "CompoAutocomplete";
+	private registered = false;
 	private readonly label = ":Component";
 	private readonly code = `local Compo = require(game.ReplicatedStorage.compo)
-
+	
 return Compo.createComponent(function(component)
 	-- onEnable is called when the tag is attached to the instance
 	function component:onEnable()
@@ -54,9 +55,11 @@ end)`;
 				return this.autoComplete(request, response);
 			},
 		);
+		this.registered = true;
 	}
 
 	onEnd() {
+		if (!this.registered) return;
 		ScriptEditorService.DeregisterAutocompleteCallback(this.processName);
 	}
 }

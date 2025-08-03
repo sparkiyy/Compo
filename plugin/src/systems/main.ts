@@ -1,4 +1,4 @@
-import {History, GUI, Button, Dependency, System, Studio } from "@rbxts/comet";
+import { History, GUI, Button, Dependency, System, Studio } from "@rbxts/comet";
 import assets from "assets/assets";
 
 @System()
@@ -12,7 +12,7 @@ export class MainSystem {
 			"Open the inspector window",
 			assets.icons.toolbarIcon,
 			true,
-			true
+			false,
 		);
 	}
 }

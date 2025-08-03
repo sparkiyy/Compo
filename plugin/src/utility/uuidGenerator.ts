@@ -1,9 +1,8 @@
-import { func } from "@rbxts/react/src/prop-types";
-
+export const uuidSize = 8;
 function generateUUIDBuffer(): buffer {
 	const uuidRandom = new Random();
-	const uuidBuffer = buffer.create(8);
-	for (let i = 0; i < 8; i++) {
+	const uuidBuffer = buffer.create(uuidSize);
+	for (let i = 0; i < uuidSize; i++) {
 		const uuidByte = uuidRandom.NextInteger(0, 255);
 		buffer.writeu8(uuidBuffer, i, uuidByte);
 	}
@@ -11,9 +10,9 @@ function generateUUIDBuffer(): buffer {
 }
 
 function tostringUUIDBuffer(uuidBuffer: buffer): string {
-	const uuidFormatString = "%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x";
+	const uuidFormatString = string.rep("%.2x", uuidSize);
 	const uuidBytes: number[] = [];
-	for (let i = 0; i < 8; i++) {
+	for (let i = 0; i < uuidSize; i++) {
 		const uuidByte = buffer.readu8(uuidBuffer, i);
 		uuidBytes.push(uuidByte);
 	}

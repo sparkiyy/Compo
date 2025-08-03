@@ -7,10 +7,16 @@ interface Props {
 	onClick?: () => void;
 }
 
-export default function CheckBox({checked, onClick}: Props) {
+export default function CheckBox({ checked, onClick }: Props) {
 	const theme = useTheme();
 	return (
-		<imagebutton Size={UDim2.fromOffset(14, 14)} BackgroundColor3={theme.Dark.Default} BorderSizePixel={0} Event={{MouseButton1Click: onClick}}>
+		<imagebutton
+			Size={UDim2.fromOffset(14, 14)}
+			BackgroundColor3={theme.Dark.Default}
+			BorderSizePixel={0}
+			Event={{ MouseButton1Click: onClick }}
+		>
+			<uicorner CornerRadius={new UDim(0, 5)} />
 			<imagelabel
 				Image={checked ? checkmark : undefined}
 				ImageColor3={theme.MainText.Default}

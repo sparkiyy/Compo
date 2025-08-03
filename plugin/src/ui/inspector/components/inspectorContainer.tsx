@@ -1,5 +1,6 @@
 import React, { ReactNode } from "@rbxts/react";
 import useTheme from "hooks/visuals/useTheme";
+import Padding from "ui/components/padding";
 export default function InspectorContainer({ children }: { children: ReactNode }) {
 	const theme = useTheme();
 	return (
@@ -12,6 +13,7 @@ export default function InspectorContainer({ children }: { children: ReactNode }
 			AutomaticCanvasSize={"Y"}
 			CanvasSize={UDim2.fromScale(0, 0)}
 		>
+			<Padding Padding={new UDim(0, 1)} />
 			{children}
 		</scrollingframe>
 	);
