@@ -7,8 +7,8 @@
   <h1 align="center">Compo</h1>
   <p align="center">
     <img alt="Download plugin badge" src="https://img.shields.io/badge/Download-plugin-yellow"/> 
-    <a href="UNLICENSE.md">
-      <img alt="Unlicensed badge" src="https://img.shields.io/badge/License-The%20Unlicense-pink"/>
+    <a href="LICENSE.md">
+      <img alt="Unlicensed badge" src="https://img.shields.io/badge/License-MIT-pink"/>
     </a>
   </p>
   <p align="center">
@@ -16,18 +16,29 @@
   </p>
 </div>
 
-## Installation 🦭
-
-You can install Compo via Wally or by downloading the `.rbxm` file:
+## Installation 🔔
+You can install Compo via Wally or by downloading the [.rbxm]("https://github.com/sparkiyy/Compo/releases") file:
 
 ```toml
-[dependencies]
 compo = "sparkiyy/compo@VERSION"
-````
+```
+
+And you can get Compo Inspector via [Roblox Marketplace](https://create.roblox.com/store/asset/) or [Releases page ](https://github.com/sparkiyy/Compo/releases)
+
+## Introduction 🔥
+In a lot of Roblox games, you'll often find dozens of nearly identical scripts scattered across different objects. For example, many _kill parts_ might each have their own `Touched` script.
+While that might work fine when your game is small, it quickly becomes a headache as your project grows. Want to make a change to how things work? You’d have to update each script individually, which can lead to errors, duplication of effort, and messy management. That’s where Compo comes in. 
+
+It introduces a component-based approach, heavily inspired by Unity's MonoBehaviour system. Instead of attaching a full script to every object, you create a reusable component and assign it to multiple instances.
+
+![Component demostration](assets/componentDemostration.jpg)
+### Inspector 🐙
+
+At the core of the whole system is Compo Inspector — a must-have plugin that connects your component setups with the runtime environment. Think of it as the middleman that scans your project for modules with the .component suffix and makes it super easy to assign them to specific instances through a user-friendly editor, similar to Unity’s Inspector. You can also expose editable fields within your components, letting you customize things on a per-instance basis like numbers, strings, booleans, enums, Vector3, Color3, and more. These fields get stored as attributes on each instance using a special naming pattern that Compo recognizes when the game runs. You could technically set these attributes manually using code like instance:SetAttribute(COMPONENT_FIELD .. componentID .. field, value), but honestly, that kind of defeats the point of using Compo. Doing it yourself skips the safety checks, convenience, and the handy editor features that Compo Inspector offers. It handles all that tedious stuff for you, making sure your components are set up right and stay consistent—all within Roblox Studio. Basically, Compo Inspector isn’t just a nice-to-have add-on — it’s a core part of the system. It replaces needing manual tagging or setups and keeps everything running smoothly behind the scenes, so you don’t have to worry about things breaking or getting out of sync.
 
 ## Guide 🐆
-
-🚧 This guide assumes you have already installed the Compo Inspector.
+Compo is an 
+Maybe you're wondering right now, why? if you can simply use collection service to do the 70% _(exagerating)_ of compo features? 
 
 Components are created using the `.component` suffix. This tells the plugin to register the component and show it in the inspector.
 
@@ -50,6 +61,8 @@ return compo.createComponent(function(component)
     end
 end)
 ```
+Compo Inspector offers a autocomplete, just type ```:Component``` and — voilà! —, you now have a functional template to start working on!
+![Compo Inspector autocomplete showcase](assets/autocomplete.gif)
 
 The Compo Inspector will automatically attach a unique ID to the module. Compo uses this ID to track the component at runtime, so **don’t remove or modify it**.
 
