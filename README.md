@@ -2,7 +2,6 @@
 <div>
   <p align="center">
     <img src="assets/asphalt/icons/toolbarIcon.png" height="100" width="100">
-    <p align="center">[PREVIEW]</p>
   </p>
   <h1 align="center">Compo</h1>
   <p align="center">
@@ -16,7 +15,7 @@
   </p>
 </div>
 
-## Installation 🔔
+## Installation 📦
 You can install Compo via Wally or by downloading the [.rbxm]("https://github.com/sparkiyy/Compo/releases") file:
 
 ```toml
@@ -25,28 +24,34 @@ compo = "sparkiyy/compo@VERSION"
 
 And you can get Compo Inspector via [Roblox Marketplace](https://create.roblox.com/store/asset/) or [Releases page ](https://github.com/sparkiyy/Compo/releases)
 
-## Introduction 🔥
-In a lot of Roblox games, you'll often find dozens of nearly identical scripts scattered across different objects. For example, many _kill parts_ might each have their own `Touched` script.
-While that might work fine when your game is small, it quickly becomes a headache as your project grows. Want to make a change to how things work? You’d have to update each script individually, which can lead to errors, duplication of effort, and messy management. 
+## Introduction 👾
+In many Roblox games, you'll often find dozens of nearly identical scripts scattered across different instances. For example, many _kill parts_ might each have their own `Touched` script.
 
-![Component demostration](assets/scriptDemostration.png)
+While that might be manageable in a small game, it quickly becomes a **nightmare** as your project grows. Want to tweak the behavior? You’ll need to update each script manually — which leads to duplication, inconsistencies, and a messy workflow.
 
-That’s where Compo comes in. 
-It introduces a component-based approach, heavily inspired by Unity's MonoBehaviour system. Instead of attaching a full script to every object, you create a reusable component and assign it to multiple instances.
+![Script-based demonstration](assets/scriptDemonstration.png)
 
-![Component demostration](assets/componentDemostration.png)
-### Inspector 🐙
+That’s where **Compo** comes in. 
 
-At the core of the whole system is Compo Inspector — a must-have plugin that connects your component setups with the runtime environment. Think of it as the middleman that scans your project for modules with the .component suffix and makes it super easy to assign them to specific instances through a user-friendly editor, similar to Unity’s Inspector. You can also expose editable fields within your components, letting you customize things on a per-instance basis like numbers, strings, booleans, enums, Vector3, Color3, and more. These fields get stored as attributes on each instance using a special naming pattern that Compo recognizes when the game runs. You can technically set these attributes manually using something like this:
-```luau
+It introduces a component-based approach, heavily inspired by Unity's `MonoBehaviour` system. Instead of attaching full scripts to every object, you write clean, reusable components and assign them to multiple instances — modular, scalable, and way easier to maintain.
+
+![Component-based demonstration](assets/componentDemonstration.png)
+### 👻 Inspector
+
+At the core of the system is Compo Inspector — a required plugin that connects your components to the runtime environment.
+
+It automatically detects all modules ending with the `.component` suffix and lets you assign them to instances through the inspector window. You can also expose `fields` in your components to customize behavior per instance 
+
+<img alt="Compo Inspector interface, showing an instance with 0 components" src="assets/compoInspectorMainWindow.png" height="400"/> 
+
+These `fields` are stored as attributes on the instance, using a special naming convention that Compo recognizes at runtime. While it's technically possible to set them manually like this...
+
+```lua
 instance:SetAttribute("_component_field" .. COMPONENT_ID .. FIELD_NAME, value)
 ```
-But that kinda defeats the point of using Compo. Doing it yourself skips the safety checks, convenience, and the handy editor features that Compo Inspector offers. It handles all that tedious stuff for you, making sure your components are set up right and stay consistent.
+...doing so defeats the purpose of using Compo. You’d be skipping validation, editor integration, and the ease-of-use that Compo Inspector provides. It takes care of all the tedious setup so your components are consistent, safe, and ready to go.
 
-## Guide 🐆
-Compo is an 
-Maybe you're wondering right now, why? if you can simply use collection service to do the 70% _(exagerating)_ of compo features? 
-
+## Getting Started 🐼
 Components are created using the `.component` suffix. This tells the plugin to register the component and show it in the inspector.
 
 Currently, components can **only** be descendants of the following two realms:
@@ -56,9 +61,9 @@ Currently, components can **only** be descendants of the following two realms:
 
 ```lua
 -- myAwesomeComponent.component.luau
-local compo = require(game.ReplicatedStorage.compo)
+local Compo = require(game.ReplicatedStorage.compo)
 
-return compo.createComponent(function(component)
+return Compo.createComponent(function(component)
     function component.start()
         print("Hello world c:, from: " .. component.instance.Name)   
     end
@@ -68,15 +73,19 @@ return compo.createComponent(function(component)
     end
 end)
 ```
-Compo Inspector offers a autocomplete, just type ```:Component``` and — voilà! —, you now have a functional template to start working on!
+
+> [!IMPORTANT] 
+> Each registered component gets a unique internal ID. Compo Inspector attaches this ID to the module so the runtime can track and manage it reliably.🔒 **Don't modify or remove** this ID manually, or things might break.
+
+### 💡 Productivity Tip
+Compo Inspector provides autocomplete support. Just type `:Component` inside a module, and — voilà! — you’ll instantly get a working component template to start with:
 ![Compo Inspector autocomplete showcase](assets/autocomplete.gif)
 
-The Compo Inspector will automatically attach a unique ID to the module. Compo uses this ID to track the component at runtime, so **don’t remove or modify it**.
-
-To initialize Compo, you need to start it in each realm:
+### 🚀 Launching
+To start Compo, you need to initialize it separately in each realm (client/server):
 
 ```lua
--- client.lua
+-- client
 local compo = require(game.ReplicatedStorage.compo)
 
 -- launch() returns a promise that resolves when the main loop starts
@@ -84,32 +93,56 @@ compo.launch():andThen(function()
     print("Compo started!")
 end)
 ```
-> \[!NOTE]
-> Compo was designed to be used together with the **Compo Inspector** plugin.
-> You can technically use it without the plugin, but you’ll have to assign every value manually — **not recommended**.
+Once launched, Compo will detect and activate all assigned components for that realm.
 
+## Serialized Fields 🦭
+One of the most powerful features of Compo is the ability to define custom, editable fields in your components — just like Unity's serialized fields. These fields allow you to customize component behavior per instance.
+
+### 💣 Defining Fields
+To expose fields, pass a second argument to createComponent: a table describing the fields and their default values.
+
+```lua
+return Compo.createComponent(function(component)
+  -- ...
+, {
+	number = Compo.fields.number(),
+	string = Compo.fields.string(),
+	boolean = Compo.fields.boolean(),
+	vector3 = Compo.fields.vector3(),
+	vector2 = Compo.fields.vector2()
+})
+```
+When a field is exposed:
+* It's stored as an attribute on the instance.
+* The field's value can be accessed at runtime through `component.fields`.
+
+### ✅ Supported Types
+
+| Type    | API                     | Default Value  |
+| ------- | ------------------------| -------------- |
+| String  | `Compo.fields.string()` | `""`           |
+| Number  | `Compo.fields.number()` | `0`            |
+| Boolean | `Compo.fields.boolean()`| `true`         |
+| Vector3 | `Compo.fields.vector3()`| `Vector3.zero` |
+| Vector2 | `Compo.fields.vector2()`| `Vector2.zero` |
+
+You can customize the default value by passing it in. If no value is passed, the default one is used.
+
+> All data is safely stored as attributes with a special naming format that Compo parses at runtime.
 ## Life Cycle
 
 <p align="center"><img alt="Download plugin badge" src="assets/lifeCycleDiagram.png" height=800/> </p>
-
-| Stage         | Description                                                                                           |
-|---------------|-----------------------------------------------------------------------------------------------------|
-| `awake()`     | Called immediately after the scheduler runs (can yield).                                           |
-| `onEnable()`  | Called the first time after each component finishes the awake phase and whenever the component is re-enabled (can yield, only the first time). |
-| `start()`     | Called on the first frame after all registered components have finished awake and onEnable phases.  |
-| `update()`    | Called every frame during `RunService.Heartbeat`.                                                   |
-| `fixedUpdate()`| Called at a fixed time interval (0.02s by default), independent of the frame rate.                  |
-| `onDisable()` | Called when a component is deactivated.                                                             |
-| `onDestroy()` | Called when a component is permanently unregistered (destroyed).                                    |
+The Compo runtime follows a structured lifecycle for every component, giving you hooks to run logic at different phases:
 
 
-
-
-## Inspector 🐙
-
-As mentioned before, the real power of Compo comes with its inspector, which is an extension of the Roblox Properties panel:
-
-<p align="center">
-  <img alt="Compo Inspector interface, showing an instance with 0 components" src="assets/compoInspectorMainWindow.png" height="400"/> 
-  <img alt="Compo Inspector interface, showing an instance with 0 components" src="assets/compoInspectorMainWindow2.png" height="400"/> 
-</p>
+| Phase           | Description                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `awake()`       | Called as soon as the scheduler detects and loads the component. Can yield.                                                                                              |
+| `onEnable()`    | Called after `awake()`. Runs once when the component is first enabled, and again if re-enabled later. Can yield.                                                         |
+| `start()`       | Called **only after all components in the realm have completed their `awake()` and `onEnable()`**. This guarantees that everything is initialized before `start()` runs. |
+| `update()`      | Called every frame on `RunService.Heartbeat`.                                                                                                                            |
+| `fixedUpdate()` | Called at a fixed interval (default: 0.02s), independent of frame rate.                                                                                                  |
+| `onDisable()`   | Called when the component is disabled or the instance is removed.                                                                                                        |
+| `onDestroy()`   | Called when the component is permanently unregistered or destroyed.                                                                                                      |
+> [!NOTE]
+> When a component yields in awake() or onEnable(), it delays the entire lifecycle — meaning no component will run start() until all components have completed both phases.
