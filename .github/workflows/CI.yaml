@@ -20,6 +20,7 @@ jobs:
 
       - name: Releasing 
         uses: softprops/action-gh-release@v2
-        with: 
+        with:
+          token: ${{ secrets.RELEASE_PAT }}
           files: |
             ./plugin/plugin.rbxm
