@@ -8,9 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1
-        run: echo "Step 1"
-      - name: Step 2
-        run: echo "Step 2"
-      - name: Step 3
-        run: echo "Step 3"
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
+
+      - name: Building plugin
+        working-directory: ./plugin
+        run: | 
+          npm install
+          npm run build
+
