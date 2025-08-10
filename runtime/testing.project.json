@@ -18,9 +18,7 @@
       },
       "ServerScriptService": {
           "$className": "ServerScriptService",
-          "Server": {
-            "$path": "testing"
-          }
+          "$path": "testing"
       }
     }
     

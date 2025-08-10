@@ -1,6 +1,8 @@
 # Project place file
 /runtime.rbxlx
-
+/*.lock
 # Roblox Studio lock files
 /*.rbxlx.lock
 /*.rbxl.lock
+/sourcemap.json
+Packages/

@@ -4,18 +4,19 @@ const ScriptEditorService = game.GetService("ScriptEditorService");
 @System()
 export class ComponentAutocompleteSystem implements OnStart, OnEnd {
 	private readonly processName = "CompoAutocomplete";
+	private registered = false;
 	private readonly label = ":Component";
-	private readonly code = `local Compo = require(game.ReplicatedStorage.Compo)
-
+	private readonly code = `local Compo = require(game.ReplicatedStorage.compo)
+	
 return Compo.createComponent(function(component)
-	-- onEnable is called when the tag is attached to the instance
-	function component:onEnable()
-		print("Hello, World!", component.instance)
+	-- Called right after awake() and onEnable()
+	function component.start()
+		print("Start!", component.instance)
 	end
 
-	-- onDisable is called when the tag is removed from the instance or the instance is destroyed
-	function component:onDisable()
-		print("Goodbye, World!", component.instance)
+	-- Called when the component is removed or the instance is destroyed
+	function component.onDestroy()
+		print("Destroyed!", component.instance)
 	end
 end)`;
 
@@ -54,9 +55,11 @@ end)`;
 				return this.autoComplete(request, response);
 			},
 		);
+		this.registered = true;
 	}
 
 	onEnd() {
+		if (!this.registered) return;
 		ScriptEditorService.DeregisterAutocompleteCallback(this.processName);
 	}
 }

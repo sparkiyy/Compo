@@ -1,38 +1,14 @@
 [package]
-# Package names are always "SCOPE/NAME"
-# They can include lowercase letters, numbers, and dashes.
 name = "sparkiyy/compo"
-
-# Descriptions are free-form. These will be used as part of package listings
-# and search results.
-description = "A lightweight MonoBehaviour‑style component system"
-
-# Versions follow Semantic Versioning.
-# https://semver.org/
+description = "A lightweight Monobehaviour-like component library"
 version = "0.1.0"
-
-# Contains an SPDX License Expression.
-# Licenses are required for publishing code to public registries.
 license = "Unlicense"
-
-# Packages belong to a "realm", which helps prevent using code in the wrong
-# context. For now, we have "server" and "shared" realms.
-# The server realm should only be used for packages which shouldn't be replicated.
 realm = "shared"
-
-
-# Wally will display this link on package's page on wally.run.
-# The repository field should be a URL to the source repository for a package.
-repository = "https://github.com/evaera/roblox-lua-promise"
-
-# You can also specify files to include or exclude from the package
-# By default gitignore files are respected and Wally won't include hidden
-# files/directories or packages downloaded by Wally.
-# include = []
-exclude = ["node_modules"]
-
-# Packages can be marked as private to prevent them from being published.
-private = true
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/sparkiyy/Compo"
 
 [dependencies]
 janitor = "howmanysmall/janitor@1.18.3"
+promise = "evaera/promise@4.0.0"
+t = "osyrisrblx/t@3.1.1"
+lemonsignal = "data-oriented-house/lemonsignal@1.10.0"

@@ -1,5 +1,8 @@
+local types = require(script.types)
+export type component<TInstance, TFields> = types.component<TInstance, TFields>
+
 return {
-	start = require(script.start),
+	launch = require(script.launch),
 	createComponent = require(script.createComponent),
-	fieldType = require(script.fieldType),
+	fields = require(script.fields)
 }

@@ -10,5 +10,7 @@
 		"editor.formatOnSave": true
 	},
 	"eslint.run": "onType",
-	"eslint.format.enable": true
+	"eslint.format.enable": true,
+	"luau-lsp.sourcemap.autogenerate": true,
+	"luau-lsp.sourcemap.rojoProjectFile": "testing.project.json"
 }
