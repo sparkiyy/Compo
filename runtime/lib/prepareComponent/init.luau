@@ -15,7 +15,7 @@ local function getRefinatedFields(instance: Instance, id: string)
 	})
 end
 
-local function manage(componentBuilder: types.componentBuilder, id: string, tag: string, instance: Instance)
+local function manage(componentBuilder: types.componentBuilder<Instance>, id: string, tag: string, instance: Instance)
 	local attribute = constants.COMPONENT_ACTIVE .. id
 	local active = instance:GetAttribute(attribute)
 	local trash = janitor.new()
@@ -79,7 +79,7 @@ return function(component: ModuleScript)
 
 	-- Requiring component. Returns both constructor and fields
 	local s, componentBuilder = pcall(require, component)
-	componentBuilder = componentBuilder :: types.componentBuilder
+	componentBuilder = componentBuilder :: types.componentBuilder<Instance>
 
 	if not s then
 		warn(`[🟠WARNING] An error ocurred loading'{component.Name}' component: {componentBuilder}`)

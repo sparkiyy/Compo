@@ -1,15 +1,15 @@
 local types = require(script.Parent.types)
 
-local function createComponent(
-	transformer: (component: types.component) -> (),
+local function createComponent<TComponent>(
+	transformer: (component: TComponent) -> (),
 	fields: {}
-): types.componentBuilder
+): types.componentBuilder<any, any>
 	return {
-		constructor = function(instance: Instance, refinatedFields : any): types.component
+		constructor = function(instance: Instance, refinatedFields : any): types.component<any, any>
 			local component = {
 				instance = instance,
 				fields = refinatedFields,
-			} :: types.component
+			}
 
 			transformer(component)
 			return component

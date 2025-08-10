@@ -1,8 +1,8 @@
 --!strict
 
-export type component = {
-	fields: {any},
-	instance: Instance,
+export type component<TInstance, TFields> = {
+	fields: TFields,
+	instance: TInstance,
 	-- life cycle methods
 	awake: (() -> ())?,
 	onEnable: (() -> ())?,
@@ -13,8 +13,8 @@ export type component = {
 	onDestroy: (() -> ())?,
 }
 
-export type componentBuilder = {
-	constructor: (instance: Instance, refinatedFields : {}) -> component,
+export type componentBuilder<TInstance, TFields> = {
+	constructor: (instance: Instance, refinatedFields : {}) -> component<TInstance, TFields>,
 	fields: {},
 }
 
