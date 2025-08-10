@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: echo "Step 1"
+      - name: Step 2
+        run: echo "Step 2"
+      - name: Step 3
+        run: echo "Step 3"
