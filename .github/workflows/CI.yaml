@@ -16,11 +16,24 @@ jobs:
         working-directory: ./plugin
         run: | 
           npm install
+
           npm run prepare
+
+      - name: Building standalone package
+        working-directory: ./runtime
+        run: rojo build -o compo.rbxm pack.project.json
+
+      - name: Publish to Wally
+        working-directory: ./runtime
+        env: 
+          WALLY_TOKEN: ${{ secrets.WALLY_AUTH_TOKEN }}
+        run: |
+          wally publish
 
       - name: Releasing 
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.RELEASE_PAT }}
           files: |
-            ./plugin/plugin.rbxm
+            ./plugin/compoInspector.rbxm
+            ./runtime/compo.rbxm
