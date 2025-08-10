@@ -2,13 +2,12 @@
 name = "sparkiyy/compo"
 description = "A lightweight Monobehaviour-like component library"
 version = "0.1.0"
-license = "Unlicense"
+license = "MIT"
 realm = "shared"
 registry = "https://github.com/UpliftGames/wally-index"
 repository = "https://github.com/sparkiyy/Compo"
 
 [dependencies]
 janitor = "howmanysmall/janitor@1.18.3"
-promise = "evaera/promise@4.0.0"
 t = "osyrisrblx/t@3.1.1"
-lemonsignal = "data-oriented-house/lemonsignal@1.10.0"
+promise = "howmanysmall/typed-promise@4.0.6"
