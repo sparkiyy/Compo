@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rbxtsc",
+    "prepare": "rbxtsc && rojo build --output plugin.rbxm",
     "watch": "concurrently -n \"rbxtsc,rojo\" -c \"blue,green\" \"rbxtsc -w\" \"rojo build --watch -o C:\\Users\\Spark.DESKTOP-MM9K7PO\\AppData\\Local\\Roblox\\Plugins\\Compo.rbxm\""
   },
   "keywords": [],
