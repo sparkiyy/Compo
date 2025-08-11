@@ -23,7 +23,7 @@ jobs:
         working-directory: ./runtime
         run: |
           wally install
-          rojo sourcemap --output sourcemap.json default.project.json
+          rojo sourcemap --output sourcemap.json package.project.json
           wally-package-types --sourcemap sourcemap.json Packages/
 
       - name: Building standalone package
