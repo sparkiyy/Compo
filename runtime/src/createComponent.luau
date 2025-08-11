@@ -11,7 +11,7 @@ local function createComponent<TComponent>(
 				fields = refinatedFields,
 			}
 
-			transformer(component)
+			transformer(component :: any)
 			return component
 		end,
 		fields = fields,

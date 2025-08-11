@@ -1,7 +1,7 @@
 local CollectionService = game:GetService("CollectionService")
 local constants = require("./constants")
 local validate = require("@self/validate")
-local scheduler = require("@self/scheduler")
+local scheduler = require("./scheduler")
 local janitor = require("../Packages/janitor")
 local t = require("../Packages/t")
 
