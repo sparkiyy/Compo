@@ -18,12 +18,19 @@ jobs:
           npm install
 
           npm run prepare
+      
+      - name: Installing Wally dependencies
+        working-directory: ./runtime
+        run: |
+          wally install
+          rojo sourcemap --output sourcemap.json default.project.json
+          wally-package-types  Packages/
 
       - name: Building standalone package
         working-directory: ./runtime
         run: rojo build -o compo.rbxm pack.project.json
-
-      - name: Publish to Wally
+      
+      - name: Publishing to Wally
         working-directory: ./runtime
         env: 
           WALLY_TOKEN: ${{ secrets.WALLY_AUTH_TOKEN }}

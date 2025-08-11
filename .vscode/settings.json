@@ -12,5 +12,5 @@
 	"eslint.run": "onType",
 	"eslint.format.enable": true,
 	"luau-lsp.sourcemap.autogenerate": true,
-	"luau-lsp.sourcemap.rojoProjectFile": "testing.project.json"
+	"luau-lsp.sourcemap.rojoProjectFile": "runtime/testing.project.json"
 }
