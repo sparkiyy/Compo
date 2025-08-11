@@ -1,16 +1,18 @@
-local constants = require(script.Parent.constants)
+local constants = require("./constants")
 
--- Gets every component in the current realm
+--[=[
+    Fetches all components within the realm.
+    @returns An array containing the corresponding ModuleScripts.
+]=]
 return function(): { ModuleScript }
 	-- In server side, game:IsLoaded() is always false
-	if constants.mainDirectory == game:GetService("StarterPlayer") and not game:IsLoaded() then 
+	if constants.realm == game:GetService("StarterPlayer") and not game:IsLoaded() then 
 		game.Loaded:Wait()
 	end
 
 	local components: { ModuleScript } = {}
-	-- Iterating throught every descendant of the realm
-	for _, component in ipairs(constants.mainDirectory:GetDescendants()) do
-		if not (component:IsA("ModuleScript")) then -- If not a module, skipping
+	for _, component in ipairs(constants.realm:GetDescendants()) do
+		if not (component:IsA("ModuleScript")) then -- If is not a module, skipping it
 			continue
 		end
 		-- TODO: Fix when I actually know how does string pattern work

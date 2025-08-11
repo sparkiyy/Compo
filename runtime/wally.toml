@@ -1,6 +1,6 @@
 [package]
 name = "sparkiyy/compo"
-description = "A lightweight Monobehaviour-like component library"
+description = "A lightweight, Unity-like component framework"
 version = "0.1.0"
 license = "MIT"
 realm = "shared"

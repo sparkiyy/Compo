@@ -1,6 +1,6 @@
 {
   "name": "compo",
   "tree": {
-    "$path": "lib"
+    "$path": "src"
   }
 }
