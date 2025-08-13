@@ -5,15 +5,17 @@
   </p>
   <h1 align="center">Compo</h1>
   <p align="center">
-    <img alt="Download plugin badge" src="https://img.shields.io/badge/Download-plugin-yellow"/> 
     <a href="LICENSE.md">
       <img alt="Unlicensed badge" src="https://img.shields.io/badge/License-MIT-pink"/>
     </a>
   </p>
   <p align="center">
-    Compo is a lightweight, Unity-like <b>component framework</b> for Roblox 📦.
+    Compo is a lightweight, Unity-like <b>component framework</b> for Roblox 📦. 
   </p>
 </div>
+
+> [!CAUTION]
+> Compo is currently in development and not yet ready for production use. Please **DO NOT** use it in production, as breaking changes may occur at any time.
 
 ## Installation 📦
 You can install Compo via Wally or by downloading the [.rbxm]("https://github.com/sparkiyy/Compo/releases") file:
@@ -22,7 +24,9 @@ You can install Compo via Wally or by downloading the [.rbxm]("https://github.co
 compo = "sparkiyy/compo@VERSION"
 ```
 
-And you can get Compo Inspector via [Roblox Marketplace](https://create.roblox.com/store/asset/) or [Releases page ](https://github.com/sparkiyy/Compo/releases)
+And you can get Compo Inspector via [Roblox Marketplace](https://create.roblox.com/store/asset/94811734793830/Compo-Inspector) or [Releases page ](https://github.com/sparkiyy/Compo/releases)
+
+---
 
 ## Introduction 👾
 In many Roblox games, you'll often find dozens of nearly identical scripts scattered across different instances. For example, many _kill parts_ might each have their own `Touched` script.
@@ -51,6 +55,7 @@ instance:SetAttribute("_component_field" .. COMPONENT_ID .. FIELD_NAME, value)
 ```
 ...doing so defeats the purpose of using Compo. You’d be skipping validation, editor integration, and the ease-of-use that Compo Inspector provides. It takes care of all the tedious setup so your components are consistent, safe, and ready to go.
 
+---
 ## Getting Started 🐼
 Components are created using the `.component` suffix. This tells the plugin to register the component and show it in the inspector.
 
@@ -129,6 +134,7 @@ When a field is exposed:
 You can customize the default value by passing it in. If no value is passed, the default one is used.
 
 > All data is safely stored as attributes with a special naming format that Compo parses at runtime.
+---
 ## Life Cycle
 
 <p align="center"><img alt="Download plugin badge" src="assets/lifeCycleDiagram.png" height=800/> </p>
@@ -146,3 +152,5 @@ The Compo runtime follows a structured lifecycle for every component, giving you
 | `onDestroy()`   | Called when the component is permanently unregistered or destroyed.                                                                                                      |
 > [!NOTE]
 > When a component yields in awake() or onEnable(), it delays the entire lifecycle — meaning no component will run start() until all components have completed both phases.
+---
+> Compo was made with ❤️ by sparkiyy, happy coding! ^.^
