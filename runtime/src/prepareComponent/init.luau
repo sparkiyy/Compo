@@ -2,8 +2,8 @@ local CollectionService = game:GetService("CollectionService")
 local constants = require("./constants")
 local validate = require("@self/validate")
 local scheduler = require("./scheduler")
-local janitor = require("../Packages/janitor")
-local t = require("../Packages/t")
+local janitor = require(script.Parent.Parent.janitor)
+local t = require(script.Parent.Parent.t)
 
 local function getRefinatedFields(fieldDefinitions: { [string]: any }, instance: Instance, id: string, janitor: janitor.Janitor)
 	local fieldSuffix = constants.COMPONENT_FIELD .. id
@@ -47,7 +47,7 @@ local function manage(componentBuilder: any, id: string, tag: string, instance: 
 	trash:LinkToInstance(instance)
 
 	if not (t.boolean(active)) then
-		warn(`[🟠WARNING] 'active' attribute is missing or is invalid!: {name}`)
+		warn(`[🟠WARNING] 'active' attribute is missing or is invalid!: {instance.Name}`)
 		return
 	end
 

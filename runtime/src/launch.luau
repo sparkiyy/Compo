@@ -1,7 +1,7 @@
-local promise = require("../Packages/promise")
+local promise = require(script.Parent.Parent.promise)
 local componentCollector = require("./componentCollector")
 local prepareComponent = require("./prepareComponent")
-local scheduler = require("./prepareComponent/scheduler")
+local scheduler = require("./scheduler")
 local _launched = false
 
 --[=[

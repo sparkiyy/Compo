@@ -7,7 +7,7 @@ export type component<TInstance, TFields> = {
 	awake: (() -> ())?,
 	onEnable: (() -> ())?,
 	start: (() -> ())?,
-	update: (() -> ())?,
+	update: ((deltaTime: number) -> ())?,
 	fixedUpdate: (() -> ())?,
 	onDisable: (() -> ())?,
 	onDestroy: (() -> ())?,

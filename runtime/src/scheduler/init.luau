@@ -1,99 +1,94 @@
 local RunService = game:GetService("RunService")
-local promise = require(script.Parent.Parent.Parent.promise)
-local lemonSignal = require(script.Parent.Parent.Parent.lemonsignal)
-local types = require(script.Parent.Parent.types)
+
+local promise = require(script.Parent.Parent.promise)
+local t = require(script.Parent.Parent.t)
+local signal = require(script.Parent.Parent.lemonsignal)
+
+local helper = require("@self/helper")
+local types = require("./types")
+local constants = require("./constants")
 
 local scheduler = {}
-scheduler.fixedTime = 0.02
+scheduler.fixedTime = 0.02 --TODO: Support for custom fixedTime
+scheduler.components = {} -- a table to store every component registered in the life cycle
 scheduler.initialized = false
-scheduler.initGroupFinished = false
-scheduler.onInitGroupFinished = lemonSignal.new()
--- a table to store every component registered in the life cycle
-scheduler.components = {}
-scheduler.awakeComponents = {}
-scheduler.startComponents = {}
-scheduler.activeComponents = {}
-scheduler.activeUpdateComponents = {}
-scheduler.activeFixedUpdateComponents = {}
+scheduler.onMainLoopInitialized = signal.new()
 
-function scheduler.insertIntoLifeCycle(component: types.component)
-	if not scheduler.initGroupFinished then
-		scheduler.onInitGroupFinished:Wait()
+local LIFECYCLE_METHODS = { "awake", "onEnable", "start", "update", "fixedUpdate", "onDisable", "onDestroy" }
+
+function scheduler.insertIntoLifeCycle(component: types.component<any, any>)
+	task.defer(function()
+		if not scheduler.initialized then
+			scheduler.onMainLoopInitialized:Wait()
+		end
+
+		helper.call(component.awake, true)
+		helper.call(component.onEnable, true)
+
 		RunService.Heartbeat:Wait()
-	end
+		if component.start then
+			component.start()
+		end
 
-	if component.awake then
-		component.awake()
-	end
-
-	if component.onEnable then
-		component.onEnable()
-	end
-
-	RunService.Heartbeat:Wait()
-	if component.start then
-		component.start()
-	end
+		scheduler.addComponent(component)
+	end)
 end
 
-function scheduler.registerComponent(component: types.component)
-	scheduler.activeComponents[component] = true
-
-	if component.update then
-		scheduler.activeUpdateComponents[component] = true
-	end
-	if component.fixedUpdate then
-		scheduler.activeFixedUpdateComponents[component] = true
-	end
-
+function scheduler.registerComponent(component: types.component<any, any>)
 	if scheduler.initialized then
 		scheduler.insertIntoLifeCycle(component)
-	else
-		scheduler.components[component] = true
-		if component.awake then
-			scheduler.awakeComponents[component] = true
-		end
-
-		if component.start then
-			scheduler.startComponents[component] = true
-		end
+		return
 	end
+
+	scheduler.addComponent(component)
+end
+
+function scheduler.addComponent(component: types.component<any, any>)
+	local entries = { active = true }
+	for _, name in ipairs(LIFECYCLE_METHODS) do
+		entries[name] = t.callback(component[name])
+	end
+	scheduler.components[component] = entries
 end
 
 function scheduler.initializeLifecycle()
-	scheduler.initialized = true
-
 	return promise.new(function(resolve)
+		if scheduler.initialized then
+			return
+		end
+		scheduler.initialized = true
 		-- awake and onEnable phase
-		local threads = {}
+		-- [[ https://github.com/Sleitnick/Axis/blob/main/src/init.lua#L220 💗]]
+		local thread = coroutine.running()
+		local componentsRunning = #scheduler.components
+		local componentsFinished = 0
+
 		for component in pairs(scheduler.components) do
-			-- awake phase
-			local thread = promise.resolve
-			if typeof(component.awake) == "function" then
-				thread = promise.promisify(component.awake)
-			end
+			-- awake and on enable phase 
+			task.spawn(function() 
+				helper.call(component.awake, true)
+				helper.call(component.onEnable)
 
-			-- onEnable phase
-
-			threads[#threads + 1] = thread():andThen(function()
-				if component.onEnable then
-					component.onEnable()
+				componentsFinished += 1
+				if componentsFinished == componentsRunning and coroutine.status(thread) == "suspended" then
+					task.spawn(thread)
 				end
 			end)
 		end
 
-		-- waiting until the first 2 phases finish
-		promise.all(threads):await()
+		if componentsFinished ~= componentsRunning then
+			coroutine.yield(thread)
+		end
+
 		RunService.Heartbeat:Wait() -- waits a frame to call start
 
 		-- start phase
-		for component in pairs(scheduler.startComponents) do
-			promise.promisify(component.start)()
+		for component, flags in pairs(scheduler.components) do
+			helper.call(component.start, true)
 		end
 
 		scheduler.initGroupFinished = true
-		scheduler.onInitGroupFinished:Fire()
-		RunService.Heartbeat:Wait() -- waits another frame to call update
+		RunService.Heartbeat:Wait() -- waits another frame to call the main loop
 
 		resolve()
 		scheduler.initializeMainLoop()
@@ -101,48 +96,46 @@ function scheduler.initializeLifecycle()
 end
 
 function scheduler.initializeMainLoop()
-	RunService.Heartbeat:Connect(function()
-		for component in pairs(scheduler.activeUpdateComponents) do
-			promise.promisify(component.update)()
+	constants.update:Connect(function(deltaTime)
+		for component, flags in pairs(scheduler.components) do
+			if not flags.active then continue end
+			helper.call(component.update, false, deltaTime)
 		end
 	end)
 
 	coroutine.wrap(function()
 		while true do
-			for component in pairs(scheduler.activeFixedUpdateComponents) do
-				promise.promisify(component.fixedUpdate)()
+			for component, flags in pairs(scheduler.components) do
+				if not flags.active then continue end
+				helper.call(component.fixedUpdate)
 			end
 			task.wait(scheduler.fixedTime)
 		end
 	end)()
+
+	scheduler.onMainLoopInitialized:Fire()
 end
 
-function scheduler.setComponentActive(component: types.component, active: boolean | nil)
+function scheduler.setComponentActive(component: types.component<any, any>, active: boolean)
 	if not scheduler.components[component] then
 		return
 	end
+	local currentState = scheduler.components[component]
 
-	if active and component.onEnable and not scheduler.activeComponents[component] then
-		promise.promisify(component.onEnable)()
-	elseif component.onDisable and scheduler.activeComponents[component] then
-		promise.promisify(component.onDisable)()
+	if currentState.active ~= active then
+		currentState.active = active
+		helper.call(active and component.onEnable or component.onDisable)
 	end
 
-    active = active or nil
-	scheduler.activeComponents[component] = active :: boolean
-	scheduler.activeFixedUpdateComponents[component] = active :: boolean
-	scheduler.activeUpdateComponents[component] = active :: boolean
+	scheduler.components[component].active = active
 end
 
-function scheduler.unregisterComponent(component: types.component)
-	return promise.resolve():andThen(function()
+function scheduler.unregisterComponent(component: types.component<any, any>)
+	task.defer(function()
 		RunService.Heartbeat:Wait()
-		-- Now I can safety call the destroy method
 		scheduler.setComponentActive(component, false)
-        scheduler.components[component] = nil
-		if component.onDestroy then
-			component.onDestroy()
-		end
+		scheduler.components[component] = nil
+		helper.call(component.onDestroy)
 	end)
 end
 

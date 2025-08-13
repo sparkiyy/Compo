@@ -1,7 +1,7 @@
 [package]
 name = "sparkiyy/compo"
 description = "A lightweight, Unity-like component framework"
-version = "0.0.1"
+version = "0.1.1"
 license = "MIT"
 realm = "shared"
 registry = "https://github.com/UpliftGames/wally-index"
@@ -11,3 +11,4 @@ repository = "https://github.com/sparkiyy/Compo"
 janitor = "howmanysmall/janitor@1.18.3"
 t = "osyrisrblx/t@3.1.1"
 promise = "howmanysmall/typed-promise@4.0.6"
+lemonsignal = "data-oriented-house/lemonsignal@1.11.0"

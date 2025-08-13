@@ -1,4 +1,4 @@
-local t = require("../../Packages/t")
+local t = require(script.Parent.Parent.Parent.t)
 local types = require("../types")
 
 local IComponent = t.interface({
